@@ -8,8 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.daos.UserDao;
 import com.revature.models.Credentials;
-import com.revature.services.BaseService;
+import com.revature.models.User;
 
 public class BaseServlet extends HttpServlet{
 
@@ -27,8 +28,13 @@ public class BaseServlet extends HttpServlet{
 			e.printStackTrace();
 		}
 	}
-	
-	BaseService baseService = new BaseService();
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Headers", "content-type");
+		super.service(request, response);
+	}
+//	BaseService baseService = new BaseService();
 	
 	/* Authenticating User w/ login credentials */
 	/* login to user */
@@ -39,8 +45,20 @@ public class BaseServlet extends HttpServlet{
 		ObjectMapper om = new ObjectMapper();
 		
 		Credentials credentials = om.readValue(req.getReader(), Credentials.class);
-		
-		om.writeValue(resp.getWriter(), baseService.authenticate(credentials));
+		User user=UserDao.getUserByUserName(credentials.getUsername());
+		if(user==null) {
+			resp.setStatus(403);
+			resp.getWriter().write("403 #1");
+		}
+		else if(!(credentials.getPassword().equals(user.getPassword()))) {
+			resp.setStatus(403);
+			resp.getWriter().write("403 #2");
+			
+		}
+		else {
+			om.writeValue(resp.getWriter(), user);
+		}
+		//om.writeValue(resp.getWriter(), baseService.authenticate(credentials));
 		
 		
 		

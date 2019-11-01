@@ -3,16 +3,66 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
-  
-  <servlet>
-   	<servlet-name>BaseServlet</servlet-name>
-  	<servlet-class>com.revature.servlets.BaseServlet</servlet-class>
-  	<!--  No load on startup yet -->
-  </servlet>
-  
-  <servlet-mapping>
-  	<servlet-name>BaseServlet</servlet-name>
-  	<url-pattern>/user</url-pattern> <!--  might require /* -->
-  </servlet-mapping>
+	<display-name>Archetype Created Web Application</display-name>
+
+	<servlet>
+		<servlet-name>BaseServlet</servlet-name>
+		<servlet-class>com.revature.servlets.BaseServlet</servlet-class>
+		<!-- No load on startup yet -->
+	</servlet>
+	<servlet>
+		<servlet-name>ViewTicketServlet</servlet-name>
+		<servlet-class>com.revature.servlets.ViewTicketServlet</servlet-class>
+		<!-- No load on startup yet -->
+	</servlet>
+	<servlet>
+		<servlet-name>CreateTicketServlet</servlet-name>
+		<servlet-class>com.revature.servlets.CreateTicketServlet</servlet-class>
+		<!-- No load on startup yet -->
+	</servlet>
+	<servlet>
+		<servlet-name>ViewTicketsServlet</servlet-name>
+		<servlet-class>com.revature.servlets.ViewTicketsServlet</servlet-class>
+		<!-- No load on startup yet -->
+	</servlet>
+	<servlet>
+		<servlet-name>ApproveTicketsServlet</servlet-name>
+		<servlet-class>com.revature.servlets.ApproveTicketServlet</servlet-class>
+		<!-- No load on startup yet -->
+	</servlet>
+	<servlet>
+		<servlet-name>DenyTicketsServlet</servlet-name>
+		<servlet-class>com.revature.servlets.DenyTicketServlet</servlet-class>
+		<!-- No load on startup yet -->
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>DenyTicketsServlet</servlet-name>
+		<url-pattern>/DenyTicket/*</url-pattern> <!-- might require /* -->
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ApproveTicketsServlet</servlet-name>
+		<url-pattern>/ApproveTicket/*</url-pattern> <!-- might require /* -->
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ViewTicketsServlet</servlet-name>
+		<url-pattern>/viewTickets/*</url-pattern> <!-- might require /* -->
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>CreateTicketServlet</servlet-name>
+		<url-pattern>/create/*</url-pattern> <!-- might require /* -->
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>BaseServlet</servlet-name>
+		<url-pattern>/user</url-pattern> <!-- might require /* -->
+	</servlet-mapping>
+	
+
+	<servlet-mapping>
+		<servlet-name>ViewTicketServlet</servlet-name>
+		<url-pattern>/ViewTicket/*</url-pattern> 
+	</servlet-mapping>
 </web-app>
