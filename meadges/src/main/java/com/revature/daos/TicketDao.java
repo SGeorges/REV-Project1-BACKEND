@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.models.Ticket;
+import com.revature.models.User;
 import com.revature.util.ConnectionUtil;
 
 public class TicketDao {
@@ -31,9 +32,34 @@ public class TicketDao {
 		}
 		return null;
 	}
-	public static Ticket getTicketById(int id) {
+	
+	public static Ticket extractTicket(ResultSet RS) throws SQLException {
+		Ticket ans=new Ticket();
+		ans.setReimb_id(RS.getInt("reimb_id"));
+		ans.setReimb_amount(RS.getDouble("reimb_amount"));
+		ans.setReimb_author_id(RS.getInt("reimb_author_id"));
+		ans.setReimb_resolver_id(RS.getInt("reimb_resolver_id"));
+		ans.setReimb_description(RS.getString("reimb_description"));
+		ans.setReimb_receipt(RS.getString("reimb_receipt"));
+		ans.setReimb_resolved(RS.getTimestamp("reimb_resolved"));
+		ans.setReimb_submitted(RS.getTimestamp("reimb_submitted"));
+		User author=UserDao.getUserByUserID(ans.getReimb_author_id());
+		User resolver=UserDao.getUserByUserID(ans.getReimb_resolver_id());
+		if(resolver==null) {
+			ans.setReimb_author_first_name(null);
+			ans.setReimb_resolver_last_name(null);
+		}
+		else{
+			ans.setReimb_resolver_first_name(resolver.getUser_first_name());
+			ans.setReimb_resolver_last_name(resolver.getUser_last_name());
+		}
+		ans.setReimb_author_first_name(author.getUser_first_name());
+		ans.setReimb_author_last_name(author.getUser_last_name());
+		return ans;
+	}
+	/*public static Ticket getTicketById(int id) {
 		try(Connection conn = ConnectionUtil.getConnection()) {
-			String sql = "select * from expenses where id = ?";
+			String sql = "select * from ers_reimbursement where id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			ResultSet RS =ps.executeQuery();
@@ -43,7 +69,7 @@ public class TicketDao {
 				String description=RS.getString("description");
 				String username=RS.getString("username");
 				String status=RS.getString("status");
-				Ticket ans=new Ticket(id,amount,type,description,username,status);
+				
 				return ans;
 			}
 		} catch (SQLException e) {
@@ -51,15 +77,14 @@ public class TicketDao {
 			e.printStackTrace();
 		}
 		return null;
-	}
-	public static List<Integer> getAllTicketIDs(){
-		List<Integer> ans= new ArrayList();
+	}*/
+	public static List<Ticket> getAllTickets(){
+		List<Ticket> ans= new ArrayList();
 		try(Connection conn = ConnectionUtil.getConnection()) {
-			String sql = "select id from expenses";
+			String sql = "select * from ers_reimbursement natural join ers_reimbursement_status natural join ers_reimbursement_type";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet RS =ps.executeQuery();
 			while(RS.next()) {
-				ans.add(RS.getInt("id"));
 				
 			}
 		} catch (SQLException e) {
@@ -69,15 +94,15 @@ public class TicketDao {
 		
 		return ans;
 	}
-	public static List<Integer> getAllTicketIDsForUserName(String userName){
-		List<Integer> ans= new ArrayList();
+	public static List<Ticket> getAllTicketsForUser(int id){
+		List<Ticket> ans= new ArrayList();
 		try(Connection conn = ConnectionUtil.getConnection()) {
-			String sql = "select id from expenses where username = ?";
+			String sql = "select * from ers_reimbursement natural join ers_reimbursement_status natural join ers_reimbursement_type where reimb_author_id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, userName);
+			ps.setInt(1,id);
 			ResultSet RS =ps.executeQuery();
 			while(RS.next()) {
-				ans.add(RS.getInt("id"));
+				ans.add(extractTicket(RS));
 				
 			}
 		} catch (SQLException e) {

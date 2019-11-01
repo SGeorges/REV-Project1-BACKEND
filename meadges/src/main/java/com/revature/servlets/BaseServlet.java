@@ -50,7 +50,7 @@ public class BaseServlet extends HttpServlet{
 			resp.setStatus(403);
 			resp.getWriter().write("403 #1");
 		}
-		else if(!(credentials.getPassword().equals(user.getPassword()))) {
+		else if(!(credentials.getPassword().equals(user.getErs_password()))) {
 			resp.setStatus(403);
 			resp.getWriter().write("403 #2");
 			
