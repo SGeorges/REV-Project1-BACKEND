@@ -30,6 +30,10 @@ public class createTicketRequest {
 	public void setType(String type) {
 		this.type = type;
 	}
+	public createTicketRequest() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public String getDescription() {
 		return description;
 	}

@@ -20,6 +20,10 @@ public class viewTicketRequest {
 	public String getPassword() {
 		return password;
 	}
+	public viewTicketRequest() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public void setPassword(String password) {
 		this.password = password;
 	}

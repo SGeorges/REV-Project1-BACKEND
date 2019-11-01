@@ -19,8 +19,8 @@ public class ConnectionUtil {
 		String url = "jdbc:postgresql://localhost:5432/postgres";
 		try {
 			Connection conn = DriverManager.getConnection(url, 
-								System.getenv("EM_ROLE"), 
-								System.getenv("EM_PASS"));
+					System.getenv("BTU"), 
+					System.getenv("BTP"));
 			return conn;
 		} catch (SQLException e) {
 			e.printStackTrace();

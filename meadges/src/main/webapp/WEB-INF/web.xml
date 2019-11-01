@@ -38,21 +38,21 @@
 	
 	<servlet-mapping>
 		<servlet-name>DenyTicketsServlet</servlet-name>
-		<url-pattern>/DenyTicket/*</url-pattern> <!-- might require /* -->
+		<url-pattern>/DenyTicket/*</url-pattern> 
 	</servlet-mapping>
 	
 	<servlet-mapping>
 		<servlet-name>ApproveTicketsServlet</servlet-name>
-		<url-pattern>/ApproveTicket/*</url-pattern> <!-- might require /* -->
+		<url-pattern>/ApproveTicket/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>ViewTicketsServlet</servlet-name>
-		<url-pattern>/viewTickets/*</url-pattern> <!-- might require /* -->
+		<url-pattern>/viewTickets/*</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
 		<servlet-name>CreateTicketServlet</servlet-name>
-		<url-pattern>/create/*</url-pattern> <!-- might require /* -->
+		<url-pattern>/create/*</url-pattern> 
 	</servlet-mapping>
 	
 	<servlet-mapping>

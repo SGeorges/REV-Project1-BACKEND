@@ -14,6 +14,18 @@ import com.revature.models.User;
 import com.revature.models.createTicketRequest;
 
 public class CreateTicketServlet extends HttpServlet {
+	public void init() throws ServletException {
+		try {
+			Class.forName("org.postgresql.Driver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public CreateTicketServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setHeader("Access-Control-Allow-Origin", "*");

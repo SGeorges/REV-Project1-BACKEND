@@ -12,14 +12,15 @@ public class UserDao {
  
 	public static User getUserByUserName(String userName) {
 		try(Connection conn = ConnectionUtil.getConnection()) {
-			String sql = "select * from users where id = ?";
+			String sql = "select * from users where username = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, userName);
 			ResultSet RS =ps.executeQuery();
 			if(RS.next()) {
 				String pass=RS.getString("pass");
-				boolean isAdmin=RS.getBoolean("isAdmin");
+				boolean isAdmin=RS.getBoolean("admin");
 				User ans=new User(userName,pass,isAdmin);
+				//System.out.println(ans);
 				return ans;
 			}
 		} catch (SQLException e) {
