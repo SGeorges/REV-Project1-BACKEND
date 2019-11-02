@@ -1,26 +1,21 @@
 package com.revature.models;
 
-public class viewTicketRequest {
-	private String username;
+public class TicketRequest {
+	private int userID;
 	private String password;
 	private int ticketID;
 	
-	public viewTicketRequest(String username, String password, int ticketID) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.ticketID = ticketID;
+	
+	public int getUserID() {
+		return userID;
 	}
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 	public String getPassword() {
 		return password;
 	}
-	public viewTicketRequest() {
+	public TicketRequest() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

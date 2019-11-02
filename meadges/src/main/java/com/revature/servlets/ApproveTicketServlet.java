@@ -12,7 +12,7 @@ import com.revature.daos.TicketDao;
 import com.revature.daos.UserDao;
 import com.revature.models.Ticket;
 import com.revature.models.User;
-import com.revature.models.viewTicketRequest;
+import com.revature.models.TicketRequest;
 
 public class ApproveTicketServlet extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,14 +28,14 @@ public class ApproveTicketServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		ObjectMapper om = new ObjectMapper();
-		viewTicketRequest vtr = om.readValue(request.getReader(), viewTicketRequest.class);
-		User user=UserDao.getUserByUserName(vtr.getUsername());
-		Ticket ticket= TicketDao.getTicketById(vtr.getTicketID());
+		TicketRequest tr = om.readValue(request.getReader(), TicketRequest.class);
+		User user=UserDao.getUserByUserID(tr.getUserID());
+		Ticket ticket= TicketDao.getTicketById(tr.getTicketID());
 		if(user==null) {
 			response.setStatus(403);
 			response.getWriter().write("403 #9");
 		}
-		else if(!(vtr.getPassword().equals(user.getPassword()))) {
+		else if(!(tr.getPassword().equals(user.getErs_password()))) {
 			response.setStatus(403);
 			response.getWriter().write("403 #10");
 			
@@ -44,13 +44,12 @@ public class ApproveTicketServlet extends HttpServlet {
 			response.setStatus(403);
 			response.getWriter().write("403 #11");
 		}
-		else if(!(user.isAdmin())){
+		else if(!(user.getUser_role_id()==1)){
 			response.setStatus(403);
 			response.getWriter().write("403 #12");
 		}
 		else {
-			TicketDao.modifyTicket(vtr.getTicketID(), "Approved");
-			om.writeValue(response.getWriter(),true);
+			om.writeValue(response.getWriter(),TicketDao.modifyTicket(tr.getTicketID(), 2, user.getErs_users_id()));
 		}
 	}
 

@@ -114,17 +114,20 @@ public class TicketDao {
 		return ans;
 	}
 	
-	public static void modifyTicket(int id,String newStatus) {
+	public static boolean modifyTicket(int id,int newStatus,int resolver) {
 		try(Connection conn = ConnectionUtil.getConnection()) {
-			String sql = "update expenses set status = ? where id = ?";
+			String sql = "update ers_reimbursement set reimb_status_id = ?, reimb_resolver_id = ?, reimb_resolved = current_date where reimb_id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, newStatus);
-			ps.setInt(2, id);
+			ps.setInt(1, newStatus);
+			ps.setInt(2, resolver);
+			ps.setInt(3, id);
 			ps.execute();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 }
