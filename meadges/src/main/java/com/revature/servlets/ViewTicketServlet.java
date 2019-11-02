@@ -15,7 +15,15 @@ import com.revature.models.User;
 import com.revature.models.TicketRequest;
 
 public class ViewTicketServlet extends HttpServlet {
-
+	@Override
+	public void init() throws ServletException {
+		try {
+			Class.forName("org.postgresql.Driver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse
 	 *      response)
