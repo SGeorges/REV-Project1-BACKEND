@@ -12,19 +12,19 @@ import com.revature.models.User;
 import com.revature.util.ConnectionUtil;
 
 public class TicketDao {
-	public static Integer createTicket(double amount,String type,String description
-			,String userName) {
+	public static Ticket createTicket(double amount,int type,String description,
+			String receipt,int userID) {
 		try(Connection conn = ConnectionUtil.getConnection()) {
-			String sql = "Insert into expenses(amount,type,description,username) values(?, ?, ?, ?) returning id";
+			String sql = "Insert into ers_reimbursement(reimb_amount,reimb_type_id,reimb_description,reimb_author_id, reimb_receipt,reimb_status_id) values(?, ?, ?, ?, ?,1) returning reimb_id";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setDouble(1, amount);
-			ps.setString(2, type);
+			ps.setInt(2, type);
 			ps.setString(3, description);
-			ps.setString(4, userName);
+			ps.setInt(4, userID);
+			ps.setString(5, receipt);
 			ResultSet RS =ps.executeQuery();
 			if(RS.next()) {
-				Integer ans =RS.getInt("id");
-				return ans;
+				return getTicketById(RS.getInt("reimb_id"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -43,6 +43,12 @@ public class TicketDao {
 		ans.setReimb_receipt(RS.getString("reimb_receipt"));
 		ans.setReimb_resolved(RS.getTimestamp("reimb_resolved"));
 		ans.setReimb_submitted(RS.getTimestamp("reimb_submitted"));
+		ans.setReimb_status_id(RS.getInt("reimb_status_id"));
+		ans.setReimb_status(RS.getString("reimb_status"));
+		ans.setReimb_type_id(RS.getInt("reimb_status_id"));
+		ans.setReimb_type(RS.getString("reimb_type"));
+		
+		//System.out.println(ans.getReimb_submitted().toString());
 		User author=UserDao.getUserByUserID(ans.getReimb_author_id());
 		User resolver=UserDao.getUserByUserID(ans.getReimb_resolver_id());
 		if(resolver==null) {
@@ -57,27 +63,22 @@ public class TicketDao {
 		ans.setReimb_author_last_name(author.getUser_last_name());
 		return ans;
 	}
-	/*public static Ticket getTicketById(int id) {
+	public static Ticket getTicketById(int id) {
 		try(Connection conn = ConnectionUtil.getConnection()) {
-			String sql = "select * from ers_reimbursement where id = ?";
+			String sql = "select * from ers_reimbursement natural join ers_reimbursement_status natural join ers_reimbursement_type where reimb_id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			ResultSet RS =ps.executeQuery();
 			if(RS.next()) {
-				double amount=RS.getDouble("amount");
-				String type=RS.getString("type");
-				String description=RS.getString("description");
-				String username=RS.getString("username");
-				String status=RS.getString("status");
 				
-				return ans;
+				return extractTicket(RS);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
-	}*/
+	}
 	public static List<Ticket> getAllTickets(){
 		List<Ticket> ans= new ArrayList();
 		try(Connection conn = ConnectionUtil.getConnection()) {
@@ -85,7 +86,7 @@ public class TicketDao {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet RS =ps.executeQuery();
 			while(RS.next()) {
-				
+				ans.add(extractTicket(RS));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

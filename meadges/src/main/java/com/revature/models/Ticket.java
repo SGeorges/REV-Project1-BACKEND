@@ -1,11 +1,12 @@
 package com.revature.models;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class Ticket {
 	private int reimb_id;
 	private double reimb_amount;
-	private String reimb_type_id;
+	private int reimb_type_id;
 	private String reimb_description;
 	private int reimb_author_id;
 	private String reimb_author_first_name;
@@ -17,19 +18,20 @@ public class Ticket {
 	private String reimb_status;
 	private String reimb_type;
 	private String reimb_receipt;
-	private Timestamp reimb_submitted;
-	private Timestamp reimb_resolved;
+	private Date reimb_submitted;
+	private Date reimb_resolved;
 	
-	public Timestamp getReimb_submitted() {
+	
+	public Date getReimb_submitted() {
 		return reimb_submitted;
 	}
-	public void setReimb_submitted(Timestamp reimb_submitted) {
+	public void setReimb_submitted(Date reimb_submitted) {
 		this.reimb_submitted = reimb_submitted;
 	}
-	public Timestamp getReimb_resolved() {
+	public Date getReimb_resolved() {
 		return reimb_resolved;
 	}
-	public void setReimb_resolved(Timestamp reimb_resolved) {
+	public void setReimb_resolved(Date reimb_resolved) {
 		this.reimb_resolved = reimb_resolved;
 	}
 	public String getReimb_receipt() {
@@ -50,10 +52,11 @@ public class Ticket {
 	public void setReimb_amount(double reimb_amount) {
 		this.reimb_amount = reimb_amount;
 	}
-	public String getReimb_type_id() {
+	
+	public int getReimb_type_id() {
 		return reimb_type_id;
 	}
-	public void setReimb_type_id(String reimb_type_id) {
+	public void setReimb_type_id(int reimb_type_id) {
 		this.reimb_type_id = reimb_type_id;
 	}
 	public String getReimb_description() {

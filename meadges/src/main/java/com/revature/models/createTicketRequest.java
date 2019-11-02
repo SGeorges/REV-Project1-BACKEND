@@ -1,16 +1,17 @@
 package com.revature.models;
 
 public class createTicketRequest {
-	private String username;
+	private int userID;
 	private String password;
 	private double amount;
-	private String type;
+	private int type;
 	private String description;
-	public String getUsername() {
-		return username;
+	private String receipt;
+	public int getUserID() {
+		return userID;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 	public String getPassword() {
 		return password;
@@ -24,15 +25,12 @@ public class createTicketRequest {
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
-	public String getType() {
+	
+	public int getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(int type) {
 		this.type = type;
-	}
-	public createTicketRequest() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 	public String getDescription() {
 		return description;
@@ -40,13 +38,11 @@ public class createTicketRequest {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public createTicketRequest(String username, String password, double amount, String type, String description) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.amount = amount;
-		this.type = type;
-		this.description = description;
+	public String getReceipt() {
+		return receipt;
+	}
+	public void setReceipt(String receipt) {
+		this.receipt = receipt;
 	}
 	
 }

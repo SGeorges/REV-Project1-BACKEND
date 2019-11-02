@@ -40,18 +40,18 @@ public class CreateTicketServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		ObjectMapper om = new ObjectMapper();
 		createTicketRequest ctr = om.readValue(request.getReader(), createTicketRequest.class);
-		User user=UserDao.getUserByUserName(ctr.getUsername());
+		User user=UserDao.getUserByUserID(ctr.getUserID());
 		if(user==null) {
 			response.setStatus(403);
 			response.getWriter().write("403 #17");
 		}
-		else if(!(ctr.getPassword().equals(user.getPassword()))) {
+		else if(!(ctr.getPassword().equals(user.getErs_password()))) {
 			response.setStatus(403);
 			response.getWriter().write("403 #18");
 			
 		}
 		else {
-			om.writeValue(response.getWriter(),TicketDao.createTicket(ctr.getAmount(), ctr.getType(), ctr.getDescription(), ctr.getUsername()));
+			om.writeValue(response.getWriter(),TicketDao.createTicket(ctr.getAmount(), ctr.getType(), ctr.getDescription(), ctr.getReceipt(),ctr.getUserID()));
 		}
 	}
 
