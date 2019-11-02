@@ -8,17 +8,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.daos.TicketDao;
 import com.revature.daos.UserDao;
 import com.revature.models.Credentials;
 import com.revature.models.User;
 
-public class BaseServlet extends HttpServlet{
-
+public class ViewTicketsServlet extends HttpServlet {
 	/**
-	 * Not needed but added anyway b/c whatever. 
+	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
 	 */
-	private static final long serialVersionUID = -8398581717265016106L;
-
 	@Override
 	public void init() throws ServletException {
 		try {
@@ -34,33 +32,39 @@ public class BaseServlet extends HttpServlet{
 		response.setHeader("Access-Control-Allow-Headers", "content-type");
 		super.service(request, response);
 	}
-//	BaseService baseService = new BaseService();
-	
-	/* Authenticating User w/ login credentials */
-	/* login to user */
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
-				throws ServletException, IOException {
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		
 		ObjectMapper om = new ObjectMapper();
 		
-		Credentials credentials = om.readValue(req.getReader(), Credentials.class);
+		Credentials credentials = om.readValue(request.getReader(), Credentials.class);
 		User user=UserDao.getUserByUserName(credentials.getUsername());
 		if(user==null) {
-			resp.setStatus(403);
-			resp.getWriter().write("403 #1");
+			response.setStatus(403);
+			response.getWriter().write("403 #3");
 		}
 		else if(!(credentials.getPassword().equals(user.getErs_password()))) {
-			resp.setStatus(403);
-			resp.getWriter().write("403 #2");
+			response.setStatus(403);
+			response.getWriter().write("403 #4");
 			
 		}
-		else {
-			om.writeValue(resp.getWriter(), user);
+		else if(user.getUser_role_id()==1){
+			om.writeValue(response.getWriter(), TicketDao.getAllTickets());
 		}
-		//om.writeValue(resp.getWriter(), baseService.authenticate(credentials));
-		
-		
-		
+		else {
+			om.writeValue(response.getWriter(),TicketDao.getAllTicketsForUser(user.getErs_users_id()));
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 }
