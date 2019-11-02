@@ -5,16 +5,15 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionUtil {
-
 	
 	public static boolean testMode = false;
 	public static Connection getConnection() {
 		
 		// First time we will use a literal user and password
-		// and we will refactor to use environment variables for safety
+		// and we will re-factor to use environment variables for safety
 		// in practice you should NEVER use literals
 		
-		// Note: JDBC url has a specific format
+		// Note: JDBC URL has a specific format
 		//  jdbc:database-type://network-location:port/internal-database
 		String url = "jdbc:postgresql://rev-project1-db.cjoxac3tcnj8.us-east-2.rds.amazonaws.com:5432/postgres";
 		try {
@@ -30,3 +29,5 @@ public class ConnectionUtil {
 	}
 	
 }
+
+

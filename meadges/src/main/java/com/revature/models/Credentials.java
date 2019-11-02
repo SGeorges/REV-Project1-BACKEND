@@ -4,7 +4,7 @@ public class Credentials {
 	private String username;
 	private String password;
 	
-	
+	/* Getter/Setter Methods */
 	public String getUsername() {
 		return username;
 	}
@@ -18,6 +18,7 @@ public class Credentials {
 		this.password = password;
 	}
 	
+	/* HashCode/Equals Methods */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -49,6 +50,7 @@ public class Credentials {
 		return true;
 	}
 	
+	/* Constructor Methods */
 	public Credentials() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -60,6 +62,7 @@ public class Credentials {
 		this.password = password;
 	}
 	
+	/* toString Method */
 	@Override
 	public String toString() {
 		return "Credentials [username=" + username + ", password=" + password + "]";
