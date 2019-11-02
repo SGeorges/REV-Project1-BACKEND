@@ -38,16 +38,16 @@ public class ViewTicketsServlet extends HttpServlet {
 			response.setStatus(403);
 			response.getWriter().write("403 #3");
 		}
-		else if(!(credentials.getPassword().equals(user.getPassword()))) {
+		else if(!(credentials.getPassword().equals(user.getErs_password()))) {
 			response.setStatus(403);
 			response.getWriter().write("403 #4");
 			
 		}
-		else if(user.isAdmin()){
-			om.writeValue(response.getWriter(), TicketDao.getAllTicketIDs());
+		else if(user.getUser_role_id()==1){
+			om.writeValue(response.getWriter(), TicketDao.getAllTickets());
 		}
 		else {
-			om.writeValue(response.getWriter(),TicketDao.getAllTicketIDsForUserName(user.getUserName()));
+			om.writeValue(response.getWriter(),TicketDao.getAllTicketsForUser(user.getErs_users_id()));
 		}
 	}
 
