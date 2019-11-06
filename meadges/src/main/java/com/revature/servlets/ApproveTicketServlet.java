@@ -12,6 +12,7 @@ import com.revature.daos.TicketDao;
 import com.revature.daos.UserDao;
 import com.revature.models.Ticket;
 import com.revature.models.User;
+import com.revature.services.BaseService;
 import com.revature.models.TicketRequest;
 
 public class ApproveTicketServlet extends HttpServlet {
@@ -40,22 +41,17 @@ public class ApproveTicketServlet extends HttpServlet {
 		TicketRequest tr = om.readValue(request.getReader(), TicketRequest.class);
 		User user=UserDao.getUserByUserID(tr.getUserID());
 		Ticket ticket= TicketDao.getTicketById(tr.getTicketID());
-		if(user==null) {
+		if(!BaseService.authenticate(tr.getPassword(), user)) {
 			response.setStatus(403);
-			response.getWriter().write("403 #9");
-		}
-		else if(!(tr.getPassword().equals(user.getErs_password()))) {
-			response.setStatus(403);
-			response.getWriter().write("403 #10");
-			
+			response.getWriter().write("403");
 		}
 		else if(ticket==null) {
 			response.setStatus(403);
-			response.getWriter().write("403 #11");
+			response.getWriter().write("403");
 		}
 		else if(!(user.getUser_role_id()==1)){
 			response.setStatus(403);
-			response.getWriter().write("403 #12");
+			response.getWriter().write("403");
 		}
 		else {
 			om.writeValue(response.getWriter(),TicketDao.modifyTicket(tr.getTicketID(), 2, user.getErs_users_id()));

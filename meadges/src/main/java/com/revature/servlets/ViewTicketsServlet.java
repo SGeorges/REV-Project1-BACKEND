@@ -12,6 +12,7 @@ import com.revature.daos.TicketDao;
 import com.revature.daos.UserDao;
 import com.revature.models.Credentials;
 import com.revature.models.User;
+import com.revature.services.BaseService;
 
 public class ViewTicketsServlet extends HttpServlet {
 	/**
@@ -43,14 +44,9 @@ public class ViewTicketsServlet extends HttpServlet {
 		
 		Credentials credentials = om.readValue(request.getReader(), Credentials.class);
 		User user=UserDao.getUserByUserName(credentials.getUsername());
-		if(user==null) {
+		if(!BaseService.authenticate(credentials.getPassword(), user)) {
 			response.setStatus(403);
-			response.getWriter().write("403 #3");
-		}
-		else if(!(credentials.getPassword().equals(user.getErs_password()))) {
-			response.setStatus(403);
-			response.getWriter().write("403 #4");
-			
+			response.getWriter().write("403");
 		}
 		else if(user.getUser_role_id()==1){
 			om.writeValue(response.getWriter(), TicketDao.getAllTickets());
