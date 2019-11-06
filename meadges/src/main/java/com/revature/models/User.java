@@ -7,6 +7,13 @@ public class User {
 	private String user_first_name;
 	private String user_last_name;
 	private String user_email;
+	private String salt;
+	public String getSalt() {
+		return salt;
+	}
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
 	private int user_role_id;
 	public int getErs_users_id() {
 		return ers_users_id;

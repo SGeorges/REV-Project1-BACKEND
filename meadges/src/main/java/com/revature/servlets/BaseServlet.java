@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.daos.UserDao;
 import com.revature.models.Credentials;
 import com.revature.models.User;
+import com.revature.services.BaseService;
 
 public class BaseServlet extends HttpServlet{
 
@@ -39,24 +40,19 @@ public class BaseServlet extends HttpServlet{
 	/* Authenticating User w/ login credentials */
 	/* login to user */
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 				throws ServletException, IOException {
 		
 		ObjectMapper om = new ObjectMapper();
 		
-		Credentials credentials = om.readValue(req.getReader(), Credentials.class);
+		Credentials credentials = om.readValue(request.getReader(), Credentials.class);
 		User user=UserDao.getUserByUserName(credentials.getUsername());
-		if(user==null) {
-			resp.setStatus(403);
-			resp.getWriter().write("403 #1");
-		}
-		else if(!(credentials.getPassword().equals(user.getErs_password()))) {
-			resp.setStatus(403);
-			resp.getWriter().write("403 #2");
-			
+		if(!BaseService.authenticate(credentials.getPassword(), user)) {
+			response.setStatus(403);
+			response.getWriter().write("403");
 		}
 		else {
-			om.writeValue(resp.getWriter(), user);
+			om.writeValue(response.getWriter(), user);
 		}
 		//om.writeValue(resp.getWriter(), baseService.authenticate(credentials));
 		

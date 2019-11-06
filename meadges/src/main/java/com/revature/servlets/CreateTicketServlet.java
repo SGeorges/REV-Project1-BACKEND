@@ -12,6 +12,7 @@ import com.revature.daos.TicketDao;
 import com.revature.daos.UserDao;
 import com.revature.models.User;
 import com.revature.models.createTicketRequest;
+import com.revature.services.BaseService;
 
 public class CreateTicketServlet extends HttpServlet {
 	public void init() throws ServletException {
@@ -41,14 +42,9 @@ public class CreateTicketServlet extends HttpServlet {
 		ObjectMapper om = new ObjectMapper();
 		createTicketRequest ctr = om.readValue(request.getReader(), createTicketRequest.class);
 		User user=UserDao.getUserByUserID(ctr.getUserID());
-		if(user==null) {
+		if(!BaseService.authenticate(ctr.getPassword(), user)) {
 			response.setStatus(403);
-			response.getWriter().write("403 #17");
-		}
-		else if(!(ctr.getPassword().equals(user.getErs_password()))) {
-			response.setStatus(403);
-			response.getWriter().write("403 #18");
-			
+			response.getWriter().write("403");
 		}
 		else {
 			om.writeValue(response.getWriter(),TicketDao.createTicket(ctr.getAmount(), ctr.getType(), ctr.getDescription(), ctr.getReceipt(),ctr.getUserID()));
