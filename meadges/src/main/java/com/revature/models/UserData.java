@@ -1,13 +1,11 @@
 package com.revature.models;
 
-public class User {
+public class UserData {
 	private int ers_users_id;
 	private String ers_username;
-	private String ers_password;
 	private String user_first_name;
 	private String user_last_name;
 	private String user_email;
-	private String salt;
 	private String user_role;
 	private int user_role_id;
 	
@@ -16,12 +14,6 @@ public class User {
 	}
 	public void setUser_role(String user_role) {
 		this.user_role = user_role;
-	}
-	public String getSalt() {
-		return salt;
-	}
-	public void setSalt(String salt) {
-		this.salt = salt;
 	}
 	public int getErs_users_id() {
 		return ers_users_id;
@@ -34,12 +26,6 @@ public class User {
 	}
 	public void setErs_username(String ers_username) {
 		this.ers_username = ers_username;
-	}
-	public String getErs_password() {
-		return ers_password;
-	}
-	public void setErs_password(String ers_password) {
-		this.ers_password = ers_password;
 	}
 	public String getUser_first_name() {
 		return user_first_name;
@@ -65,5 +51,15 @@ public class User {
 	public void setUser_role_id(int user_role_id) {
 		this.user_role_id = user_role_id;
 	}
+	public UserData(User user) {
+		this.ers_username=user.getErs_username();
+		this.ers_users_id=user.getErs_users_id();
+		this.user_email=user.getUser_email();
+		this.user_first_name=user.getUser_first_name();
+		this.user_last_name=user.getUser_last_name();
+		this.user_role=user.getUser_role();
+		this.user_role_id=user.getUser_role_id();
+	}
+	
 	
 }
