@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.daos.UserDao;
 import com.revature.models.Credentials;
 import com.revature.models.User;
+import com.revature.models.UserData;
 import com.revature.services.BaseService;
 
 public class BaseServlet extends HttpServlet{
@@ -52,11 +53,15 @@ public class BaseServlet extends HttpServlet{
 			response.getWriter().write("403");
 		}
 		else {
-			om.writeValue(response.getWriter(), user);
+			om.writeValue(response.getWriter(), new UserData(user));
 		}
 		//om.writeValue(resp.getWriter(), baseService.authenticate(credentials));
 		
 		
 		
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 }

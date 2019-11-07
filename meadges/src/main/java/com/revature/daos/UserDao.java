@@ -19,11 +19,12 @@ public class UserDao {
 		ans.setUser_email(RS.getString("user_email"));
 		ans.setUser_role_id(RS.getInt("user_role_id"));
 		ans.setSalt(RS.getString("salt"));
+		ans.setUser_role(RS.getString("user_role"));
 		return ans;
 	}
 	public static User getUserByUserID(int id) {
 		try(Connection conn = ConnectionUtil.getConnection()) {
-			String sql = "select * from ers_users natural join salts where ers_users_id = ?";
+			String sql = "select * from ers_users natural join ers_users_roles natural join salts where ers_users_id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			ResultSet RS =ps.executeQuery();
@@ -38,7 +39,7 @@ public class UserDao {
 	}
 	public static User getUserByUserName(String userName) {
 		try(Connection conn = ConnectionUtil.getConnection()) {
-			String sql = "select * from ers_users natural join salts where ers_username = ?";
+			String sql = "select * from ers_users natural join ers_users_roles natural join salts where ers_username = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, userName);
 			ResultSet RS =ps.executeQuery();
