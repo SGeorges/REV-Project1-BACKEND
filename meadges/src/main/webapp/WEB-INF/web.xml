@@ -35,6 +35,14 @@
 		<servlet-class>com.revature.servlets.DenyTicketServlet</servlet-class>
 		<!-- No load on startup yet -->
 	</servlet>
+	<servlet>
+		<servlet-name>ReceiptServlet</servlet-name>
+		<servlet-class>com.revature.servlets.ReceiptServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ReceiptServlet</servlet-name>
+		<url-pattern>/Receipt/</url-pattern>
+	</servlet-mapping>
 	
 	<servlet-mapping>
 		<servlet-name>DenyTicketsServlet</servlet-name>
