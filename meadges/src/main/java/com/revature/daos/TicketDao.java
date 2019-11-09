@@ -130,4 +130,43 @@ public class TicketDao {
 		}
 		return true;
 	}
+
+	public static Object getAllTicketsByStatus(String status) {
+		List<Ticket> ans= new ArrayList();
+		try(Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "select * from ers_reimbursement natural join ers_reimbursement_status natural join ers_reimbursement_type where reimb_status = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, status);
+			ResultSet RS =ps.executeQuery();
+			while(RS.next()) {
+				ans.add(extractTicket(RS));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return ans;
+	}
+
+	public static Object getAllTicketsForUserByStatus(int ers_users_id, String status) {
+		// TODO Auto-generated method stub
+		List<Ticket> ans= new ArrayList();
+		try(Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "select * from ers_reimbursement natural join ers_reimbursement_status natural join ers_reimbursement_type where reimb_author_id = ? and reimb_status = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1,ers_users_id);
+			ps.setString(2, status);
+			ResultSet RS =ps.executeQuery();
+			while(RS.next()) {
+				ans.add(extractTicket(RS));
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return ans;
+	}
 }

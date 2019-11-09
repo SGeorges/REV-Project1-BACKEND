@@ -44,15 +44,29 @@ public class ViewTicketsServlet extends HttpServlet {
 		
 		Credentials credentials = om.readValue(request.getReader(), Credentials.class);
 		User user=UserDao.getUserByUserName(credentials.getUsername());
+		String info = request.getPathInfo();
+		
+		
+		
 		if(!BaseService.authenticate(credentials.getPassword(), user)) {
 			response.setStatus(403);
 			response.getWriter().write("403");
 		}
 		else if(user.getUser_role_id()==1){
-			om.writeValue(response.getWriter(), TicketDao.getAllTickets());
+			if (info == null) {
+				om.writeValue(response.getWriter(), TicketDao.getAllTickets());
+			}
+			else {
+				String[] parts = info.split("/");
+				om.writeValue(response.getWriter(), TicketDao.getAllTicketsByStatus(parts[1]));
+			}
 		}
 		else {
-			om.writeValue(response.getWriter(),TicketDao.getAllTicketsForUser(user.getErs_users_id()));
+			if (info == null) om.writeValue(response.getWriter(),TicketDao.getAllTicketsForUser(user.getErs_users_id()));
+			else {
+				String[] parts = info.split("/");
+				om.writeValue(response.getWriter(),TicketDao.getAllTicketsForUserByStatus(user.getErs_users_id(),parts[1]));
+			}
 		}
 	}
 
