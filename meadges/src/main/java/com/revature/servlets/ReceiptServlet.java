@@ -35,11 +35,14 @@ public class ReceiptServlet extends HttpServlet {
 	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String reimb_id =request.getHeader("reimb_id");
+		//String reimb_id =request.getHeader("reimb_id");
 		Regions region =Regions.US_EAST_2;
 		String bucketName = "revaturemeadows";
-		System.out.println(System.getenv("S3AccessKeyID"));
-		System.out.println(System.getenv("S3SecretAccessKey"));
+		//System.out.println(System.getenv("S3AccessKeyID"));
+		//System.out.println(System.getenv("S3SecretAccessKey"));
+		String info = request.getPathInfo();
+		String[] parts = info.split("/");
+		String reimb_id=parts[1];
 		BasicAWSCredentials cred = new BasicAWSCredentials((System.getenv("S3AccessKeyID")), System.getenv("S3SecretAccessKey"));
         try {
         	 AmazonS3 s3Client = AmazonS3ClientBuilder.standard()

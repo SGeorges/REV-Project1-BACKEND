@@ -59,7 +59,7 @@ public class ViewTicketsServlet extends HttpServlet {
 			else {
 				
 				String[] parts = info.split("/");
-				System.out.println(parts.length);
+				//System.out.println(parts.length);
 				if(parts.length<=1)om.writeValue(response.getWriter(), TicketDao.getAllTickets());
 				else om.writeValue(response.getWriter(), TicketDao.getAllTicketsByStatus(parts[1]));
 			}

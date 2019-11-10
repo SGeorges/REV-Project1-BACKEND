@@ -41,7 +41,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ReceiptServlet</servlet-name>
-		<url-pattern>/Receipt/</url-pattern>
+		<url-pattern>/Receipt/*</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
