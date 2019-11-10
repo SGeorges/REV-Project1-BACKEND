@@ -6,7 +6,7 @@ public class createTicketRequest {
 	private double amount;
 	private int type;
 	private String description;
-	private String receipt;
+	//private String receipt;
 	public int getUserID() {
 		return userID;
 	}
@@ -38,11 +38,11 @@ public class createTicketRequest {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getReceipt() {
+	/*public String getReceipt() {
 		return receipt;
 	}
 	public void setReceipt(String receipt) {
 		this.receipt = receipt;
-	}
+	}*/
 	
 }

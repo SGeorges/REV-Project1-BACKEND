@@ -57,15 +57,19 @@ public class ViewTicketsServlet extends HttpServlet {
 				om.writeValue(response.getWriter(), TicketDao.getAllTickets());
 			}
 			else {
+				
 				String[] parts = info.split("/");
-				om.writeValue(response.getWriter(), TicketDao.getAllTicketsByStatus(parts[1]));
+				System.out.println(parts.length);
+				if(parts.length<=1)om.writeValue(response.getWriter(), TicketDao.getAllTickets());
+				else om.writeValue(response.getWriter(), TicketDao.getAllTicketsByStatus(parts[1]));
 			}
 		}
 		else {
 			if (info == null) om.writeValue(response.getWriter(),TicketDao.getAllTicketsForUser(user.getErs_users_id()));
 			else {
 				String[] parts = info.split("/");
-				om.writeValue(response.getWriter(),TicketDao.getAllTicketsForUserByStatus(user.getErs_users_id(),parts[1]));
+				if(parts.length<=1)om.writeValue(response.getWriter(),TicketDao.getAllTicketsForUser(user.getErs_users_id()));
+				else om.writeValue(response.getWriter(),TicketDao.getAllTicketsForUserByStatus(user.getErs_users_id(),parts[1]));
 			}
 		}
 	}
