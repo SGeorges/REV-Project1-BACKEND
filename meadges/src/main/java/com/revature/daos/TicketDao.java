@@ -15,13 +15,13 @@ public class TicketDao {
 	public static Ticket createTicket(double amount,int type,String description,
 			String receipt,int userID) {
 		try(Connection conn = ConnectionUtil.getConnection()) {
-			String sql = "Insert into ers_reimbursement(reimb_amount,reimb_type_id,reimb_description,reimb_author_id, reimb_receipt,reimb_status_id) values(?, ?, ?, ?, ?,1) returning reimb_id";
+			String sql = "Insert into ers_reimbursement(reimb_amount,reimb_type_id,reimb_description,reimb_author_id, reimb_status_id) values(?, ?, ?, ?,1) returning reimb_id";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setDouble(1, amount);
 			ps.setInt(2, type);
 			ps.setString(3, description);
 			ps.setInt(4, userID);
-			ps.setString(5, receipt);
+			//ps.setString(5, receipt);
 			ResultSet RS =ps.executeQuery();
 			if(RS.next()) {
 				return getTicketById(RS.getInt("reimb_id"));
@@ -32,7 +32,19 @@ public class TicketDao {
 		}
 		return null;
 	}
-	
+	public static void setReceipt(int reimb_id,String url) {
+		try(Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "update ers_reimbursement set receipt = ? where reimb_id= ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, url);
+			ps.setInt(2, reimb_id);
+			ps.execute();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public static Ticket extractTicket(ResultSet RS) throws SQLException {
 		Ticket ans=new Ticket();
 		ans.setReimb_id(RS.getInt("reimb_id"));

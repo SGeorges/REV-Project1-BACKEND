@@ -53,20 +53,10 @@ public class ViewTicketsServlet extends HttpServlet {
 			response.getWriter().write("403");
 		}
 		else if(user.getUser_role_id()==1){
-			if (info == null) {
-				om.writeValue(response.getWriter(), TicketDao.getAllTickets());
-			}
-			else {
-				String[] parts = info.split("/");
-				om.writeValue(response.getWriter(), TicketDao.getAllTicketsByStatus(parts[1]));
-			}
+			om.writeValue(response.getWriter(), TicketDao.getAllTickets());
 		}
 		else {
-			if (info == null) om.writeValue(response.getWriter(),TicketDao.getAllTicketsForUser(user.getErs_users_id()));
-			else {
-				String[] parts = info.split("/");
-				om.writeValue(response.getWriter(),TicketDao.getAllTicketsForUserByStatus(user.getErs_users_id(),parts[1]));
-			}
+			om.writeValue(response.getWriter(),TicketDao.getAllTicketsForUser(user.getErs_users_id()));
 		}
 	}
 
