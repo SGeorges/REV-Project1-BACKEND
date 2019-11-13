@@ -12,8 +12,7 @@ import com.revature.models.User;
 import com.revature.util.ConnectionUtil;
 
 public class TicketDao {
-	public static Ticket createTicket(double amount,int type,String description,
-			String receipt,int userID) {
+	public static Ticket createTicket(double amount,int type,String description, int userID) {
 		try(Connection conn = ConnectionUtil.getConnection()) {
 			String sql = "Insert into ers_reimbursement(reimb_amount,reimb_type_id,reimb_description,reimb_author_id, reimb_status_id) values(?, ?, ?, ?,1) returning reimb_id";
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -34,7 +33,7 @@ public class TicketDao {
 	}
 	public static void setReceipt(int reimb_id,String url) {
 		try(Connection conn = ConnectionUtil.getConnection()) {
-			String sql = "update ers_reimbursement set receipt = ? where reimb_id= ?";
+			String sql = "update ers_reimbursement set reimb_receipt = ? where reimb_id= ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, url);
 			ps.setInt(2, reimb_id);

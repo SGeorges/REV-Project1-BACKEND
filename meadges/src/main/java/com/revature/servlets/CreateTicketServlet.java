@@ -47,7 +47,7 @@ public class CreateTicketServlet extends HttpServlet {
 			response.getWriter().write("403");
 		}
 		else {
-			om.writeValue(response.getWriter(),TicketDao.createTicket(ctr.getAmount(), ctr.getType(), ctr.getDescription(), ctr.getReceipt(),ctr.getUserID()));
+			om.writeValue(response.getWriter(),TicketDao.createTicket(ctr.getAmount(), ctr.getType(), ctr.getDescription(), ctr.getUserID()));
 		}
 	}
 

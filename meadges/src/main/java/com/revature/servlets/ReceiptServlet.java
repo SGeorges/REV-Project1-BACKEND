@@ -1,33 +1,28 @@
 package com.revature.servlets;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.io.ByteArrayInputStream;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.model.AccessControlList;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.daos.TicketDao;
-import com.revature.daos.UserDao;
-import com.revature.models.User;
-import com.revature.models.createTicketRequest;
-import com.revature.services.BaseService;
 
 public class ReceiptServlet extends HttpServlet {
 	public void init() throws ServletException {
@@ -38,16 +33,30 @@ public class ReceiptServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+	
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Headers", "content-type");
+		super.service(request, response);
+	}
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String reimb_id =request.getHeader("reimb_id");
+		//String reimb_id =request.getHeader("reimb_id");
 		Regions region =Regions.US_EAST_2;
 		String bucketName = "revaturemeadows";
-        
+		System.out.println("doGet in ReceiptServlet happening.");
+		//System.out.println(System.getenv("S3AccessKeyID"));
+		//System.out.println(System.getenv("S3SecretAccessKey"));
+		String info = request.getPathInfo();
+		String[] parts = info.split("/");
+		String reimb_id=parts[1];
+		BasicAWSCredentials cred = new BasicAWSCredentials((System.getenv("S3AccessKeyID")), System.getenv("S3SecretAccessKey"));
         try {
         	 AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                      .withRegion(region)
-                     .withCredentials(new ProfileCredentialsProvider())
+                     .withCredentials(new AWSStaticCredentialsProvider(cred))
                      .build();
 
         	 InputStream inputStream = request.getInputStream();
@@ -56,12 +65,12 @@ public class ReceiptServlet extends HttpServlet {
         	 InputStream stream = new ByteArrayInputStream(contents);
         	 ObjectMetadata metadata = new ObjectMetadata();
         	 metadata.setContentLength(contents.length);
-        	 metadata.setContentType("image/");
+        	 metadata.setContentType("image/png");
         	 PutObjectRequest s3Put = new PutObjectRequest(bucketName, reimb_id, stream, metadata).withCannedAcl(CannedAccessControlList.PublicRead);
         	 s3Client.putObject(s3Put);
         	 //AccessControlList acl = s3Client.getObjectAcl(bucketName, reimb_id);
         	 
-        	 URL url = s3Client.getUrl("ers-tickets", reimb_id);
+        	 URL url = s3Client.getUrl(bucketName, reimb_id);
         	 TicketDao.setReceipt(Integer.parseInt(reimb_id), url.toString());
         }
 	 catch (AmazonServiceException e) {
